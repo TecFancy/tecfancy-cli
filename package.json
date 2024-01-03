@@ -1,0 +1,14 @@
+{
+  "name": "tecfancy-cli",
+  "private": true,
+  "workspaces": [
+    "core/*",
+    "commands/*",
+    "models/*",
+    "utils/*"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "lerna": "^8.0.1"
+  }
+}
