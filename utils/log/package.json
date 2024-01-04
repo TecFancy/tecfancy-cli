@@ -6,7 +6,7 @@
     "TecFancy",
     "Log"
   ],
-  "author": "Randal Wang <randal_wang@resourcepro.com.cn>",
+  "author": "TecFancy <admin@icoder.ac.cn>",
   "homepage": "https://github.com/TecFancy/tecfancy-cli#readme",
   "license": "MIT",
   "main": "lib/index.js",
