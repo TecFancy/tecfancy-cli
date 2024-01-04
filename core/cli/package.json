@@ -2,7 +2,7 @@
   "name": "@tecfancy/cli",
   "version": "0.0.0",
   "description": "TecFancy CLI",
-  "author": "Randal Wang <rf.wangchn@foxmail.com>",
+  "author": "TecFancy <admin@icoder.ac.cn>",
   "homepage": "https://github.com/TecFancy/tecfancy-cli#readme",
   "license": "MIT",
   "main": "lib/index.js",
