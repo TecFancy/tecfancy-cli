@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "CommonJS",
+    "declaration": true,
+    "strict": true,
+    "sourceMap": true
+  },
+  "exclude": ["node_modules", "**/__tests__/*", "**/lib/*"]
+}
