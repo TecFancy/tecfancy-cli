@@ -16,8 +16,8 @@
     "bin"
   ],
   "bin": {
-    "tecfancy": "bin/index.js",
-    "tf": "bin/index.js"
+    "tecfancy": "lib/index.js",
+    "tf": "lib/index.js"
   },
   "publishConfig": {
     "registry": "http://rsp-poc-secommunity:11000/repository/npm-group/"
@@ -36,9 +36,10 @@
     "@tecfancy/log": "../../utils/log",
     "commander": "^11.1.0",
     "fs-extra": "^11.2.0",
-    "import-local": "^3.1.0"
+    "inquirer": "^9.2.12"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4"
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.7"
   }
 }
