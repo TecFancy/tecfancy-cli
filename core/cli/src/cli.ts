@@ -5,6 +5,7 @@ import log from "@tecfancy/log";
 
 import init from './init.js';
 import checkPkgVersion from "./checkPkgVersion.js";
+import checkUserHome from "./checkUserHome.js";
 
 import pkg from "../package.json";
 
@@ -29,6 +30,7 @@ function registCommander() {
 async function cli() {
   try {
     checkPkgVersion();
+    checkUserHome();
     registCommander();
   } catch (error: any) {
     log.error("", `Failed to execute the command: ${error}`);
