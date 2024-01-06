@@ -3,6 +3,7 @@
 import { program } from "commander";
 
 import init from './init.js';
+import checkPkgVersion from "./checkPkgVersion.js";
 
 import pkg from "../package.json";
 
@@ -26,6 +27,7 @@ function registCommander() {
 
 async function cli() {
   try {
+    checkPkgVersion();
     registCommander();
   } catch (error: any) {}
 }
