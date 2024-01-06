@@ -1,6 +1,7 @@
 "use strict";
 
 import { program } from "commander";
+import log from "@tecfancy/log";
 
 import init from './init.js';
 import checkPkgVersion from "./checkPkgVersion.js";
@@ -29,7 +30,10 @@ async function cli() {
   try {
     checkPkgVersion();
     registCommander();
-  } catch (error: any) {}
+  } catch (error: any) {
+    log.error("", `Failed to execute the command: ${error}`);
+    throw new Error(`Failed to execute the command: ${error}`); // Propagate the exception to be handled by the caller
+  }
 }
 
 export default cli;
