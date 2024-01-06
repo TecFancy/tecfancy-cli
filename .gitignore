@@ -10,3 +10,5 @@ node_modules/
 
 # Builded files
 **/lib/
+
+.DS_Store
