@@ -31,9 +31,10 @@ async function emptyDirPrompt(): Promise<boolean> {
 async function emptyDir(dirPath: string) {
   try {
     await fse.emptyDir(dirPath);
+    log.info("", `The directory at ${dirPath} has been emptied successfully.`);
   } catch (error) {
-    log.error("", `Failed to empty the directory: ${error}`);
-    throw error; // Propagate the exception to be handled by the caller
+    log.error("", `Failed to empty the directory at ${dirPath}: ${error}`);
+    throw new Error(`Failed to empty the directory at ${dirPath}: ${error}`); // Propagate the exception to be handled by the caller
   }
 }
 
@@ -44,21 +45,19 @@ async function emptyDir(dirPath: string) {
 async function mkdir(dirPath: string) {
   try {
     await fse.mkdir(dirPath);
-    log.success("", "The directory has been created successfully!");
+    log.info("", `The directory at ${dirPath} has been created successfully.`);
   } catch (error) {
-    log.error("", `Failed to create the directory: ${error}`);
-    throw error; // Propagate the exception to be handled by the caller
+    log.error("", `Failed to create the directory at ${dirPath}: ${error}`);
+    throw new Error(`Failed to create the directory at ${dirPath}: ${error}`); // Propagate the exception to be handled by the caller
   }
 }
 
 /**
- * Initialize the project
- * @param projectName project name
+ * Create a directory if it does not exist, or empty it if it does
+ * @param dirPath directory path
  * @param options options
  */
-async function init(projectName: string | undefined, options: OptionsType) {
-  const dirPath = projectName ? path.join(process.cwd(), projectName) : process.cwd();
-
+async function createDir(dirPath: string, options: OptionsType) {
   if (fse.existsSync(dirPath)) {
     // Check if the directory is not empty
     if (fse.readdirSync(dirPath).length > 0) {
@@ -70,12 +69,28 @@ async function init(projectName: string | undefined, options: OptionsType) {
       if (proceed) {
         await emptyDir(dirPath);
       } else {
-        log.info("", "Operation cancelled.");
-        return; // If user chooses not to overwrite, cancel the operation
+        log.info("", "Operation cancelled."); // If user chooses not to overwrite, cancel the operation
       }
     }
   } else {
     await mkdir(dirPath); // If the directory does not exist, create it
+  }
+}
+
+/**
+ * Initialize the project
+ * @param projectName project name
+ * @param options options
+ */
+async function init(projectName: string | undefined, options: OptionsType) {
+  try {
+    const dirPath = projectName
+      ? path.join(process.cwd(), projectName)
+      : process.cwd();
+    await createDir(dirPath, options);
+  } catch (error) {
+    log.error("", `Initialization failed: ${error}`);
+    throw new Error(`Initialization failed: ${error}`); // Propagate the exception to be handled by the caller
   }
 }
 
