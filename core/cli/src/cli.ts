@@ -1,7 +1,5 @@
 "use strict";
 
-import path from "path";
-import { homedir as userHome } from "os";
 import { program } from "commander";
 import log from "@tecfancy/log";
 
@@ -9,10 +7,10 @@ import init from './init.js';
 import checkPkgVersion from "./checkPkgVersion.js";
 import checkUserHome from "./checkUserHome.js";
 import checkConfigDir from "./checkConfigDir.js";
+import checkEnvFile from "./checkEnvFile.js";
+import setupEnvConfig from "./setupEnvConfig.js";
 
 import pkg from "../package.json";
-
-import { DEFAULT_CLI_HOME } from "./const.js";
 
 function registCommander() {
   program
@@ -34,10 +32,11 @@ function registCommander() {
 
 async function cli() {
   try {
-    const configDir = path.join(userHome(), '.config', DEFAULT_CLI_HOME);
     checkPkgVersion();
     checkUserHome();
-    checkConfigDir(configDir);
+    checkConfigDir();
+    checkEnvFile();
+    setupEnvConfig();
     registCommander();
   } catch (error: any) {
     log.error("", `Failed to execute the command: ${error}`);
