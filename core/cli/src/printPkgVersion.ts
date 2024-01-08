@@ -4,8 +4,8 @@ import log from "@tecfancy/log";
 import pkg from "../package.json";
 
 /**
- * Check the version of the package
+ * Print the version of the package
  */
-export default function checkPkgVersion() {
+export default function printPkgVersion() {
   log.notice("version", pkg.version);
 }
