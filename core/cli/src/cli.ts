@@ -4,7 +4,7 @@ import log from "@tecfancy/log";
 
 import printPkgVersion from "./printPkgVersion.js";
 import checkUserHome from "./checkUserHome.js";
-import checkConfigDir from "./checkConfigDir.js";
+import createConfigDir from "./createConfigDir.js";
 import checkEnvFile from "./checkEnvFile.js";
 import setupEnvConfig from "./setupEnvConfig.js";
 import registCommander from "./registCommander.js";
@@ -13,7 +13,7 @@ async function cli() {
   try {
     printPkgVersion();
     checkUserHome();
-    checkConfigDir();
+    createConfigDir();
     checkEnvFile();
     setupEnvConfig();
     registCommander();
