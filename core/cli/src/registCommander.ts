@@ -11,8 +11,7 @@ export default function registCommander() {
     .version(pkg.version, "-v, --version", "output the current version")
     .name(Object.keys(pkg.bin)[0])
     .alias(Object.keys(pkg.bin)[1])
-    .usage("<command> [options]")
-    .option("-d, --debug", "output extra debugging", false);
+    .usage("<command> [options]");
 
   program
     .command("init [projectName]")
@@ -26,7 +25,7 @@ export default function registCommander() {
       log.error("", `Invalid command: ${args[0]}`);
     }
   });
-  
+
   program.parse(process.argv);
 
   if (!program?.args?.length) program.outputHelp();
