@@ -29,8 +29,11 @@
     "url": "https://github.com/TecFancy/tecfancy-cli/issues"
   },
   "dependencies": {
+    "@tecfancy/clear-last-line": "file:../../utils/clear-last-line",
     "@tecfancy/const": "file:../../utils/const",
     "@tecfancy/log": "file:../../utils/log",
-    "fs-extra": "^11.2.0"
+    "axios": "^1.6.5",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.12"
   }
 }

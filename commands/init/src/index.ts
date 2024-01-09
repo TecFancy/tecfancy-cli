@@ -2,7 +2,10 @@
 
 import path from "path";
 import fse from "fs-extra";
+import axios from "axios";
+import clearLastLine from "@tecfancy/clear-last-line";
 import log from "@tecfancy/log";
+
 import createDir from "./createDir.js";
 import { CACHE_DIR, NODE_MODULES_DIR } from "@tecfancy/const";
 
@@ -16,7 +19,47 @@ function createNodeModulesDir() {
   }
 }
 
-function getProjectsList() {}
+/**
+ * Get the project list from github
+ * @returns project list
+ */
+async function getProjectsList() {
+  log.info("", "Getting project list...");
+  const request = axios.create({
+    baseURL: "https://api.github.com/repos",
+    timeout: 5000,
+  });
+  const result = await request({
+    url: "/tecfancy/tecfancy-templates/contents/templates.json",
+  });
+  return JSON.parse(Buffer.from(result.data.content, "base64").toString());
+}
+
+/**
+ * Select the project type
+ * @returns project type
+ */
+async function selectType() {
+  const inquirer = (await import("inquirer")).default;
+  return inquirer.prompt([
+    {
+      type: "list",
+      name: "type",
+      message: "Please select the project type: ",
+      default: "Project",
+      choices: [
+        {
+          name: "Project",
+          value: "Project",
+        },
+        {
+          name: "Component",
+          value: "Component",
+        },
+      ],
+    },
+  ]) as Promise<{ type: "Project" | "Component" }>;
+}
 
 function cloneRepo() {}
 
@@ -32,7 +75,9 @@ async function init(projectName: string | undefined, options: OptionsType) {
       : process.cwd();
     await createDir(dirPath, options.force);
     createNodeModulesDir();
-    getProjectsList();
+    const projectListData = await getProjectsList();
+    clearLastLine();
+    const selectedType = (await selectType()).type;
     cloneRepo();
   } catch (error) {
     log.error("", `Initialization failed: ${error}`);
