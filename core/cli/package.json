@@ -33,6 +33,7 @@
     "url": "https://github.com/TecFancy/tecfancy-cli/issues"
   },
   "dependencies": {
+    "@tecfancy/init": "file:../../commands/init",
     "@tecfancy/log": "file:../../utils/log",
     "commander": "^11.1.0",
     "dotenv": "^16.3.1",

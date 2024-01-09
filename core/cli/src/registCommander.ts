@@ -1,8 +1,8 @@
 "use strict";
 
 import { program } from "commander";
+import init from "@tecfancy/init";
 import log from "@tecfancy/log";
-import init from "./init.js";
 
 import pkg from "../package.json";
 
