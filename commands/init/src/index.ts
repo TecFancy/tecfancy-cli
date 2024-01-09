@@ -45,7 +45,7 @@ async function selectType() {
     {
       type: "list",
       name: "type",
-      message: "Please select the project type: ",
+      message: "Please select the project type:",
       default: "Project",
       choices: [
         {
@@ -59,6 +59,34 @@ async function selectType() {
       ],
     },
   ]) as Promise<{ type: "Project" | "Component" }>;
+}
+
+/**
+ * Select the project
+ * @param selectedType selected type
+ * @param projectList project list data
+ * @returns project name
+ */
+async function selectProject(
+  selectedType: "Project" | "Component",
+  projectList: any[]
+) {
+  const inquirer = (await import("inquirer")).default;
+  return inquirer.prompt([
+    {
+      type: "list",
+      name: "project",
+      message: `Please select the project:`,
+      choices: projectList
+        .filter((project) => project.tags.includes(selectedType))
+        .map((project) => {
+          return {
+            name: project.name.zh_CN,
+            value: project.npmName,
+          };
+        }),
+    },
+  ]) as Promise<{ project: string }>;
 }
 
 function cloneRepo() {}
@@ -78,6 +106,11 @@ async function init(projectName: string | undefined, options: OptionsType) {
     const projectListData = await getProjectsList();
     clearLastLine();
     const selectedType = (await selectType()).type;
+    const selectedProject = (await selectProject(
+      selectedType,
+      projectListData
+    )).project;
+    log.info("", `Selected project: ${selectedProject}`);
     cloneRepo();
   } catch (error) {
     log.error("", `Initialization failed: ${error}`);
