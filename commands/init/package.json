@@ -29,6 +29,7 @@
     "url": "https://github.com/TecFancy/tecfancy-cli/issues"
   },
   "dependencies": {
+    "@tecfancy/const": "file:../../utils/const",
     "@tecfancy/log": "file:../../utils/log",
     "fs-extra": "^11.2.0"
   }

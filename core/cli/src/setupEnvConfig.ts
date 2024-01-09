@@ -1,7 +1,7 @@
 "use strict";
 
 import fse from "fs-extra";
-import { DEFAULT_CLI_HOME, DOTENV_PATH } from "./const";
+import { DEFAULT_CLI_HOME, DOTENV_PATH } from "@tecfancy/const";
 
 /**
  * Set the default configuration

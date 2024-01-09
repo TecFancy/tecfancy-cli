@@ -1,7 +1,7 @@
 "use strict";
 
 import fse from "fs-extra";
-import { DEFAULT_CLI_HOME } from "./const";
+import { DEFAULT_CLI_HOME } from "@tecfancy/const";
 
 /**
  * Create the configuration directory

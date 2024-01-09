@@ -4,7 +4,7 @@ import path from "path";
 import fse from "fs-extra";
 import log from "@tecfancy/log";
 import createDir from "./createDir.js";
-import { CACHE_DIR, NODE_MODULES_DIR } from "./const.js";
+import { CACHE_DIR, NODE_MODULES_DIR } from "@tecfancy/const";
 
 interface OptionsType {
   force?: boolean;
