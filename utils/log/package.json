@@ -15,11 +15,9 @@
     "test": "__tests__"
   },
   "files": [
-    "src"
+    "src",
+    "lib"
   ],
-  "publishConfig": {
-    "registry": "http://rsp-poc-secommunity:11000/repository/npm-group/"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TecFancy/tecfancy-cli.git"
