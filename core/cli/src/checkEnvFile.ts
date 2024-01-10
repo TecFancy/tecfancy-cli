@@ -2,7 +2,7 @@
 
 import fse from "fs-extra";
 import dotenv from "dotenv";
-import { DEFAULT_CLI_HOME, DOTENV_PATH } from "./const";
+import { DEFAULT_CLI_HOME, DOTENV_PATH } from "@tecfancy/const";
 
 /**
  * Check the configuration file of environment variables
