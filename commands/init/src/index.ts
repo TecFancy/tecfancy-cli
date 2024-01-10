@@ -36,10 +36,26 @@ async function getProjectsList() {
 }
 
 /**
+ * Get the project tags
+ * @param projectListData project list data
+ * @returns project tags
+ */
+function extraTags(projectListData: any[]) {
+  const tagsSet = new Set<string>();
+  projectListData.forEach((project) => {
+    project.tags.forEach((tag: Record<string, string>) => {
+      // TODO: default is English, need to be changed to the current language
+      tagsSet.add(tag.default);
+    });
+  });
+  return Array.from(tagsSet).map((tag) => ({ name: tag, value: tag }));
+}
+
+/**
  * Select the project type
  * @returns project type
  */
-async function selectType() {
+async function selectType(projectListData: any[]) {
   const inquirer = (await import("inquirer")).default;
   return inquirer.prompt([
     {
@@ -47,16 +63,7 @@ async function selectType() {
       name: "type",
       message: "Please select the project type:",
       default: "Project",
-      choices: [
-        {
-          name: "Project",
-          value: "Project",
-        },
-        {
-          name: "Component",
-          value: "Component",
-        },
-      ],
+      choices: extraTags(projectListData),
     },
   ]) as Promise<{ type: "Project" | "Component" }>;
 }
@@ -71,20 +78,21 @@ async function selectProject(
   selectedType: "Project" | "Component",
   projectList: any[]
 ) {
+  const filteredProjectList = projectList.filter((project) =>
+    project.tags.find(
+      (tag: Record<string, string>) => tag.default === selectedType
+    )
+  );
   const inquirer = (await import("inquirer")).default;
   return inquirer.prompt([
     {
       type: "list",
       name: "project",
       message: `Please select the project:`,
-      choices: projectList
-        .filter((project) => project.tags.includes(selectedType))
-        .map((project) => {
-          return {
-            name: project.name.zh_CN,
-            value: project.npmName,
-          };
-        }),
+      choices: filteredProjectList.map((project) => ({
+        name: project.name.default, // TODO: default is English, need to be changed to the current language
+        value: project.npmName,
+      })),
     },
   ]) as Promise<{ project: string }>;
 }
@@ -105,12 +113,10 @@ async function init(projectName: string | undefined, options: OptionsType) {
     createNodeModulesDir();
     const projectListData = await getProjectsList();
     clearLastLine();
-    const selectedType = (await selectType()).type;
-    const selectedProject = (await selectProject(
-      selectedType,
-      projectListData
-    )).project;
-    log.info("", `Selected project: ${selectedProject}`);
+    const selectedType = (await selectType(projectListData)).type;
+    const selectedProject = (await selectProject(selectedType, projectListData))
+      .project;
+    console.log("init selectedProject", selectedProject);
     cloneRepo();
   } catch (error) {
     log.error("", `Initialization failed: ${error}`);
