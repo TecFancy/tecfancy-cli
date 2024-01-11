@@ -12,4 +12,8 @@ export const DOTENV_PATH = path.join(DEFAULT_CLI_HOME, ".env");
 // cache directory path
 export const CACHE_DIR = path.join(DEFAULT_CLI_HOME, "cache");
 
-export const NODE_MODULES_DIR = path.join(DEFAULT_CLI_HOME, "node_modules");
+export const NODE_MODULES_DIR = path.join(CACHE_DIR, "node_modules");
+
+export const STORE_DIR = path.join(CACHE_DIR, "store");
+
+export const REGISTRY = process.env.TECFANCY_CLI_REGISTRY || "https://registry.npmjs.org";

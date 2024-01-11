@@ -34,6 +34,7 @@
     "@tecfancy/log": "file:../../utils/log",
     "axios": "^1.6.5",
     "fs-extra": "^11.2.0",
-    "inquirer": "^9.2.12"
+    "inquirer": "^9.2.12",
+    "npminstall": "^7.12.0"
   }
 }

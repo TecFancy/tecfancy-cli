@@ -3,11 +3,12 @@
 import path from "path";
 import fse from "fs-extra";
 import axios from "axios";
+import npminstall from 'npminstall';
 import clearLastLine from "@tecfancy/clear-last-line";
 import log from "@tecfancy/log";
 
 import createDir from "./createDir.js";
-import { CACHE_DIR, NODE_MODULES_DIR } from "@tecfancy/const";
+import { CACHE_DIR, NODE_MODULES_DIR, REGISTRY } from "@tecfancy/const";
 
 interface OptionsType {
   force?: boolean;
@@ -87,17 +88,29 @@ async function selectProject(
   return inquirer.prompt([
     {
       type: "list",
-      name: "project",
+      name: "npmName",
       message: `Please select the project:`,
       choices: filteredProjectList.map((project) => ({
         name: project.name.default, // TODO: default is English, need to be changed to the current language
         value: project.npmName,
       })),
     },
-  ]) as Promise<{ project: string }>;
+  ]) as Promise<{ npmName: string }>;
 }
 
-function cloneRepo() {}
+async function installProject(selectedNpmName: string) {
+  try {
+    await npminstall({
+      root: CACHE_DIR,
+      storeDir: NODE_MODULES_DIR,
+      registry: REGISTRY,
+      pkgs: [{ name: selectedNpmName, version: "latest" }]
+    });
+  } catch (error) {
+    log.error("", `Get project failed: ${error}`);
+    throw new Error(`Get project failed: ${error}`); // Propagate the exception to be handled by the caller    
+  }
+}
 
 /**
  * Initialize the project
@@ -114,10 +127,9 @@ async function init(projectName: string | undefined, options: OptionsType) {
     const projectListData = await getProjectsList();
     clearLastLine();
     const selectedType = (await selectType(projectListData)).type;
-    const selectedProject = (await selectProject(selectedType, projectListData))
-      .project;
-    console.log("init selectedProject", selectedProject);
-    cloneRepo();
+    const selectedNpmName = (await selectProject(selectedType, projectListData))
+      .npmName;
+    await installProject(selectedNpmName);
   } catch (error) {
     log.error("", `Initialization failed: ${error}`);
     throw new Error(`Initialization failed: ${error}`); // Propagate the exception to be handled by the caller
