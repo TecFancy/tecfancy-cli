@@ -30,13 +30,13 @@ export const TECFANCY_CLI_NODE_MODULES_DIR = getEnvParam(
 );
 
 // store directory path
-export const STORE_DIR = getEnvParam(
+export const TECFANCY_CLI_STORE_DIR = getEnvParam(
   TECFANCY_CLI_CACHE_DIR,
   path.join(TECFANCY_CLI_CACHE_DIR, "store")
 );
 
 // registry url
-export const REGISTRY = getEnvParam(
+export const TECFANCY_CLI_REGISTRY_URL = getEnvParam(
   "TECFANCY_CLI_REGISTRY_URL",
   "https://registry.npmjs.org"
 );
