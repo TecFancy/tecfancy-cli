@@ -3,21 +3,9 @@
 import { program } from "commander";
 import init from "@tecfancy/init";
 import log from "@tecfancy/log";
+import { setEnvVariablesFromCommand } from "@tecfancy/set-env-variables";
 
 import pkg from "../package.json";
-
-/**
- * Set environment variables
- */
-function setEnvVariablesFromCommand(command: typeof program, flag: string, variables: Record<string, string>) {
-  command.options.forEach((option) => {
-    if (option.flags.includes(flag)) {
-      Object.keys(variables).forEach((key) => {
-        process.env[key] = variables[key];
-      });
-    }
-  });
-}
 
 function basicProgram() {
   program
