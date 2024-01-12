@@ -3,20 +3,20 @@
 import path from "path";
 import fse from "fs-extra";
 import axios from "axios";
-import npminstall from 'npminstall';
+import npminstall from "npminstall";
 import clearLastLine from "@tecfancy/clear-last-line";
 import log from "@tecfancy/log";
 
 import createDir from "./createDir.js";
-import { CACHE_DIR, NODE_MODULES_DIR, REGISTRY } from "@tecfancy/const";
+import { TECFANCY_CLI_CACHE_DIR, TECFANCY_CLI_NODE_MODULES_DIR, TECFANCY_CLI_REGISTRY_URL } from "@tecfancy/const";
 
 interface OptionsType {
   force?: boolean;
 }
 
 function createNodeModulesDir() {
-  if (!fse.pathExistsSync(NODE_MODULES_DIR)) {
-    fse.mkdirpSync(NODE_MODULES_DIR);
+  if (!fse.pathExistsSync(TECFANCY_CLI_NODE_MODULES_DIR)) {
+    fse.mkdirpSync(TECFANCY_CLI_NODE_MODULES_DIR);
   }
 }
 
@@ -101,14 +101,14 @@ async function selectProject(
 async function installProject(selectedNpmName: string) {
   try {
     await npminstall({
-      root: CACHE_DIR,
-      storeDir: NODE_MODULES_DIR,
-      registry: REGISTRY,
-      pkgs: [{ name: selectedNpmName, version: "latest" }]
+      root: TECFANCY_CLI_CACHE_DIR,
+      storeDir: TECFANCY_CLI_NODE_MODULES_DIR,
+      registry: TECFANCY_CLI_REGISTRY_URL,
+      pkgs: [{ name: selectedNpmName, version: "latest" }],
     });
   } catch (error) {
     log.error("", `Get project failed: ${error}`);
-    throw new Error(`Get project failed: ${error}`); // Propagate the exception to be handled by the caller    
+    throw new Error(`Get project failed: ${error}`); // Propagate the exception to be handled by the caller
   }
 }
 
