@@ -3,15 +3,15 @@
 import fse from "fs-extra";
 import * as envVariables from "@tecfancy/const";
 
-function updateOrCreateEnvVariables(envVariables: { [key: string]: string }) {
-  let fileContent = fse.pathExistsSync(envVariables.TECFANCY_CLI_DOTENV_PATH)
-    ? fse.readFileSync(envVariables.TECFANCY_CLI_DOTENV_PATH, "utf8")
+function updateOrCreateEnvVariables(variables: { [key: string]: string }) {
+  let fileContent = fse.pathExistsSync(variables.TECFANCY_CLI_DOTENV_PATH)
+    ? fse.readFileSync(variables.TECFANCY_CLI_DOTENV_PATH, "utf8")
     : "";
   let isFileChanged = false;
   const originalLines = fileContent.split('\n').filter(line => line.trim() !== ''); // remove empty lines
   const updatedLines = [...originalLines];
 
-  for (const [key, value] of Object.entries(envVariables)) {
+  for (const [key, value] of Object.entries(variables)) {
     if (key === "TECFANCY_CLI_DOTENV_PATH") continue; // skip this variable
     let hasKey = false;
     let isValueChanged = false;
@@ -47,5 +47,5 @@ function updateOrCreateEnvVariables(envVariables: { [key: string]: string }) {
  * Set the default configuration
  */
 export default function setupEnvConfig() {
-  updateOrCreateEnvVariables(envVariables);
+  updateOrCreateEnvVariables(envVariables.CUSTOM_ENV_VARIABLES);
 }
