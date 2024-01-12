@@ -40,3 +40,7 @@ export const TECFANCY_CLI_REGISTRY_URL = getEnvParam(
   "TECFANCY_CLI_REGISTRY_URL",
   "https://registry.npmjs.org"
 );
+
+export const CUSTOM_ENV_VARIABLES = {
+  TECFANCY_CLI_REGISTRY_URL,
+};
