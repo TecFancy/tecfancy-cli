@@ -7,9 +7,13 @@ let currentSpinner: cliSpinners.Spinner;
 
 /**
  * Start the spinner
+ * @param message spinner message
  * @param spinnerName spinner name
  */
-export function spinnerStart(spinnerName: cliSpinners.SpinnerName = "line") {
+export function spinnerStart(
+  message: string = "",
+  spinnerName: cliSpinners.SpinnerName = "line"
+) {
   // choose a spinner style, default is 'line'
   const spinner = cliSpinners[spinnerName];
   currentSpinner = spinner;
@@ -18,7 +22,7 @@ export function spinnerStart(spinnerName: cliSpinners.SpinnerName = "line") {
   let i = 0;
   interval = setInterval(() => {
     process.stdout.write(
-      "\r" + spinner.frames[(i = ++i % spinner.frames.length)]
+      `\r${spinner.frames[(i = ++i % spinner.frames.length)]} ${message}`
     );
   }, spinner.interval);
 }
