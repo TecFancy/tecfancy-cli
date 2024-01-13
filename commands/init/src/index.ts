@@ -1,6 +1,5 @@
 "use strict";
 
-import path from "path";
 import fse from "fs-extra";
 import axios from "axios";
 import npminstall from "npminstall";
@@ -102,7 +101,7 @@ async function selectProject(
   ]) as Promise<{ npmName: string }>;
 }
 
-async function installProject(selectedNpmName: string) {
+async function downloadProject(selectedNpmName: string) {
   try {
     await npminstall({
       root: TECFANCY_CLI_CACHE_DIR,
@@ -130,7 +129,7 @@ async function init(projectName: string | undefined, options: OptionsType) {
     const selectedType = (await selectType(projectListData)).type;
     const selectedNpmName = (await selectProject(selectedType, projectListData))
       .npmName;
-    await installProject(selectedNpmName);
+    await downloadProject(selectedNpmName);
   } catch (error) {
     log.error("", `Initialization failed: ${error}`);
     throw new Error(`Initialization failed: ${error}`); // Propagate the exception to be handled by the caller

@@ -32,6 +32,7 @@
     "@tecfancy/clear-last-line": "file:../../utils/clear-last-line",
     "@tecfancy/const": "file:../../utils/const",
     "@tecfancy/log": "file:../../utils/log",
+    "@tecfancy/spinner": "file:../../utils/spinner",
     "axios": "^1.6.5",
     "fs-extra": "^11.2.0",
     "inquirer": "^9.2.12",
