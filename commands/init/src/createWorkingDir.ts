@@ -33,9 +33,9 @@ async function emptyDirPrompt(): Promise<boolean> {
  * Empty the directory
  * @param dirPath {string} directory path
  */
-async function emptyDir(dirPath: string) {
+function emptyDirSync(dirPath: string) {
   try {
-    await fse.emptyDir(dirPath);
+    fse.emptyDirSync(dirPath);
     log.info("", `The directory at ${dirPath} has been emptied successfully.`);
   } catch (error) {
     log.error("", `Failed to empty the directory at ${dirPath}: ${error}`);
@@ -47,9 +47,9 @@ async function emptyDir(dirPath: string) {
  * Create a directory
  * @param dirPath {string} directory path
  */
-async function mkdir(dirPath: string) {
+function mkdirSync(dirPath: string) {
   try {
-    await fse.mkdir(dirPath);
+    fse.mkdirSync(dirPath);
     log.info("", `The directory at ${dirPath} has been created successfully.`);
   } catch (error) {
     log.error("", `Failed to create the directory at ${dirPath}: ${error}`);
@@ -73,12 +73,12 @@ export default async function createWorkingDir(projectName?: string, force?: boo
         proceed = await emptyDirPrompt();
       }
       if (proceed) {
-        await emptyDir(workingDir);
+        emptyDirSync(workingDir);
       } else {
         log.info("", "Operation cancelled."); // If user chooses not to overwrite, cancel the operation
       }
     }
   } else {
-    await mkdir(workingDir); // If the directory does not exist, create it
+    mkdirSync(workingDir); // If the directory does not exist, create it
   }
 }
