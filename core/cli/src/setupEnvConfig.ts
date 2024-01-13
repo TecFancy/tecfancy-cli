@@ -12,7 +12,6 @@ function updateOrCreateEnvVariables(variables: { [key: string]: string }) {
   const updatedLines = [...originalLines];
 
   for (const [key, value] of Object.entries(variables)) {
-    if (key === "TECFANCY_CLI_DOTENV_PATH") continue; // skip this variable
     let hasKey = false;
     let isValueChanged = false;
 
