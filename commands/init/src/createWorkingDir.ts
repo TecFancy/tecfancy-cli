@@ -1,7 +1,17 @@
 "use strict";
 
+import path from "path";
 import fse from "fs-extra";
 import log from "@tecfancy/log";
+
+/**
+ * Get the working directory
+ * @param projectName project name
+ * @returns working directory
+ */
+function getWorkingDir(projectName?: string) {
+  return projectName ? path.join(process.cwd(), projectName) : process.cwd();
+}
 
 /**
  * Prompt whether to empty the existing directory
@@ -52,22 +62,23 @@ async function mkdir(dirPath: string) {
  * @param dirPath directory path
  * @param force whether to force emptying the directory
  */
-export default async function createDir(dirPath: string, force: boolean | undefined) {
-  if (fse.existsSync(dirPath)) {
+export default async function createWorkingDir(projectName?: string, force?: boolean) {
+  const workingDir = getWorkingDir(projectName);
+  if (fse.existsSync(workingDir)) {
     // Check if the directory is not empty
-    if (fse.readdirSync(dirPath).length > 0) {
+    if (fse.readdirSync(workingDir).length > 0) {
       let proceed = force; // If force is true, proceed without prompt
       if (!proceed) {
         // If not forcing, ask the user to confirm overwriting
         proceed = await emptyDirPrompt();
       }
       if (proceed) {
-        await emptyDir(dirPath);
+        await emptyDir(workingDir);
       } else {
         log.info("", "Operation cancelled."); // If user chooses not to overwrite, cancel the operation
       }
     }
   } else {
-    await mkdir(dirPath); // If the directory does not exist, create it
+    await mkdir(workingDir); // If the directory does not exist, create it
   }
 }

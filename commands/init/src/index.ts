@@ -7,8 +7,12 @@ import npminstall from "npminstall";
 import clearLastLine from "@tecfancy/clear-last-line";
 import log from "@tecfancy/log";
 
-import createDir from "./createDir.js";
-import { TECFANCY_CLI_CACHE_DIR, TECFANCY_CLI_NODE_MODULES_DIR, TECFANCY_CLI_REGISTRY_URL } from "@tecfancy/const";
+import createWorkingDir from "./createWorkingDir.js";
+import {
+  TECFANCY_CLI_CACHE_DIR,
+  TECFANCY_CLI_NODE_MODULES_DIR,
+  TECFANCY_CLI_REGISTRY_URL,
+} from "@tecfancy/const";
 
 interface OptionsType {
   force?: boolean;
@@ -119,10 +123,7 @@ async function installProject(selectedNpmName: string) {
  */
 async function init(projectName: string | undefined, options: OptionsType) {
   try {
-    const dirPath = projectName
-      ? path.join(process.cwd(), projectName)
-      : process.cwd();
-    await createDir(dirPath, options.force);
+    await createWorkingDir(projectName, options.force);
     createNodeModulesDir();
     const projectListData = await getProjectsList();
     clearLastLine();
