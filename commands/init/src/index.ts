@@ -1,17 +1,19 @@
 "use strict";
 
+import path from "path";
 import fse from "fs-extra";
 import axios from "axios";
 import npminstall from "npminstall";
 import clearLastLine from "@tecfancy/clear-last-line";
 import log from "@tecfancy/log";
-
-import createWorkingDir from "./createWorkingDir.js";
+import { spinnerStart, spinnerStop } from "@tecfancy/spinner";
 import {
   TECFANCY_CLI_CACHE_DIR,
   TECFANCY_CLI_NODE_MODULES_DIR,
   TECFANCY_CLI_REGISTRY_URL,
 } from "@tecfancy/const";
+
+import createWorkingDir from "./createWorkingDir.js";
 
 interface OptionsType {
   force?: boolean;
@@ -28,15 +30,21 @@ function createNodeModulesDir() {
  * @returns project list
  */
 async function getProjectsList() {
-  log.info("", "Getting project list...");
-  const request = axios.create({
-    baseURL: "https://api.github.com/repos",
-    timeout: 5000,
-  });
-  const result = await request({
-    url: "/tecfancy/tecfancy-templates/contents/templates.json",
-  });
-  return JSON.parse(Buffer.from(result.data.content, "base64").toString());
+  try {
+    log.info("", "Getting project list...");
+    const request = axios.create({
+      baseURL: "https://api.github.com/repos",
+      timeout: 5000,
+    });
+    const result = await request({
+      url: "/tecfancy/tecfancy-templates/contents/templates.json",
+    });
+    clearLastLine();
+    return JSON.parse(Buffer.from(result.data.content, "base64").toString());
+  } catch (error) {
+    log.error("", `Get project list failed: ${error}`);
+    throw new Error(`Get project list failed: ${error}`); // Propagate the exception to be handled by the caller
+  }
 }
 
 /**
@@ -106,13 +114,30 @@ async function downloadProject(selectedNpmName: string) {
     await npminstall({
       root: TECFANCY_CLI_CACHE_DIR,
       storeDir: TECFANCY_CLI_NODE_MODULES_DIR,
-      registry: TECFANCY_CLI_REGISTRY_URL,
+      registry:
+        process.env.TECFANCY_CLI_REGISTRY_URL || TECFANCY_CLI_REGISTRY_URL,
       pkgs: [{ name: selectedNpmName, version: "latest" }],
     });
+    clearLastLine(4);
+    log.success("", "Download project successfully.");
   } catch (error) {
+    log.info("", `Try to use the mirror of China with -c option.`);
     log.error("", `Get project failed: ${error}`);
     throw new Error(`Get project failed: ${error}`); // Propagate the exception to be handled by the caller
   }
+}
+
+function installProject(projectName: string = "", selectedNpmName: string) {
+  spinnerStart("Installing project...");
+  const projectPath = path.join(TECFANCY_CLI_NODE_MODULES_DIR, selectedNpmName);
+  const workingPath = path.join(process.cwd(), projectName);
+  fse.ensureDirSync(projectPath);
+  fse.ensureDirSync(workingPath);
+  fse.copySync(projectPath, workingPath, {
+    dereference: true, // Follow symbolic links
+  });
+  spinnerStop();
+  log.success("", "Install project successfully.");
 }
 
 /**
@@ -125,11 +150,13 @@ async function init(projectName: string | undefined, options: OptionsType) {
     await createWorkingDir(projectName, options.force);
     createNodeModulesDir();
     const projectListData = await getProjectsList();
-    clearLastLine();
-    const selectedType = (await selectType(projectListData)).type;
-    const selectedNpmName = (await selectProject(selectedType, projectListData))
-      .npmName;
+    const { type: selectedType } = await selectType(projectListData);
+    const { npmName: selectedNpmName } = await selectProject(
+      selectedType,
+      projectListData
+    );
     await downloadProject(selectedNpmName);
+    installProject(projectName, selectedNpmName);
   } catch (error) {
     log.error("", `Initialization failed: ${error}`);
     throw new Error(`Initialization failed: ${error}`); // Propagate the exception to be handled by the caller
