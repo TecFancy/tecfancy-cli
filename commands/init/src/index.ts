@@ -30,18 +30,22 @@ function createNodeModulesDir() {
  * @returns project list
  */
 async function getProjectsList() {
+  spinnerStart("Getting project list...");
+
   try {
-    log.info("", "Getting project list...");
     const request = axios.create({
       baseURL: "https://api.github.com/repos",
       timeout: 5000,
     });
+    
     const result = await request({
       url: "/tecfancy/tecfancy-templates/contents/templates.json",
     });
-    clearLastLine();
+    spinnerStop();
+
     return JSON.parse(Buffer.from(result.data.content, "base64").toString());
   } catch (error) {
+    spinnerStop();
     log.error("", `Get project list failed: ${error}`);
     throw new Error(`Get project list failed: ${error}`); // Propagate the exception to be handled by the caller
   }
@@ -118,7 +122,6 @@ async function downloadProject(selectedNpmName: string) {
         process.env.TECFANCY_CLI_REGISTRY_URL || TECFANCY_CLI_REGISTRY_URL,
       pkgs: [{ name: selectedNpmName, version: "latest" }],
     });
-    clearLastLine(4);
     log.success("", "Download project successfully.");
   } catch (error) {
     log.info("", `Try to use the mirror of China with -c option.`);
