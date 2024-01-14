@@ -17,7 +17,7 @@
     "test": "__tests__"
   },
   "files": [
-    "src",
+    "lib",
     "bin"
   ],
   "bin": {
