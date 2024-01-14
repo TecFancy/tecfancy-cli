@@ -8,9 +8,11 @@ import createConfigDir from "./createConfigDir.js";
 import checkEnvFile from "./checkEnvFile.js";
 import setupEnvConfig from "./setupEnvConfig.js";
 import registCommander from "./registCommander.js";
+import checkUpdate from "./checkUpdate.js";
 
 async function cli() {
   try {
+    await checkUpdate();
     printPkgVersion();
     checkUserHome();
     createConfigDir();
