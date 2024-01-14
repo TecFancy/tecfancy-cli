@@ -24,6 +24,9 @@
     "tecfancy": "lib/index.js",
     "tf": "lib/index.js"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TecFancy/tecfancy-cli.git"
