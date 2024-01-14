@@ -1,7 +1,12 @@
 {
   "name": "@tecfancy/cli",
   "version": "0.0.0",
-  "description": "TecFancy CLI",
+  "description": "The @tecfancy/cli is a front-end development scaffold tool that comes integrated with popular front-end frameworks and component libraries currently in vogue.",
+  "keywords": [
+    "Scaffolding",
+    "TecFancy Cli",
+    "@tecfancy/cli"
+  ],
   "author": "TecFancy <admin@icoder.ac.cn>",
   "homepage": "https://github.com/TecFancy/tecfancy-cli#readme",
   "license": "MIT",
