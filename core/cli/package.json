@@ -41,7 +41,6 @@
     "@tecfancy/const": "file:../../utils/const",
     "@tecfancy/init": "file:../../commands/init",
     "@tecfancy/log": "file:../../utils/log",
-    "@tecfancy/set-env-variables": "file:../../utils/set-env-variables",
     "commander": "^11.1.0",
     "dotenv": "^16.3.1",
     "fs-extra": "^11.2.0",

@@ -3,7 +3,6 @@
 import { program } from "commander";
 import init from "@tecfancy/init";
 import log from "@tecfancy/log";
-import { setEnvVariablesFromCommand } from "@tecfancy/set-env-variables";
 
 import pkg from "../package.json";
 
@@ -16,16 +15,12 @@ function basicProgram() {
 }
 
 function initProgram() {
-  const initCommand = program
+  program
     .command("init [projectName]")
     .description("init project")
     .option("-f, --force", "overwrite target directory if it exist")
     .option("-c, --china", "use the mirror of China")
     .action(init);
-
-  setEnvVariablesFromCommand(initCommand, "-c", {
-    TECFANCY_CLI_REGISTRY_URL: "https://registry.npm.taobao.org",
-  });
 }
 
 export default function registCommander() {
