@@ -1,6 +1,6 @@
 {
   "name": "@tecfancy/cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "The @tecfancy/cli is a front-end development scaffold tool that comes integrated with popular front-end frameworks and component libraries currently in vogue.",
   "keywords": [
     "Scaffolding",

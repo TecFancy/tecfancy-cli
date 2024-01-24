@@ -1,6 +1,6 @@
 {
   "name": "@tecfancy/init",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "TecFancy Init",
   "keywords": [
     "TecFancy",
@@ -34,8 +34,8 @@
     "@tecfancy/clear-last-line": "file:../../utils/clear-last-line",
     "@tecfancy/const": "file:../../utils/const",
     "@tecfancy/log": "file:../../utils/log",
-    "@tecfancy/spinner": "file:../../utils/spinner",
     "@tecfancy/set-env-variables": "file:../../utils/set-env-variables",
+    "@tecfancy/spinner": "file:../../utils/spinner",
     "axios": "^1.6.5",
     "fs-extra": "^11.2.0",
     "inquirer": "^9.2.12",
