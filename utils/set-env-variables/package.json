@@ -29,8 +29,5 @@
   },
   "bugs": {
     "url": "https://github.com/TecFancy/tecfancy-cli/issues"
-  },
-  "dependencies": {
-    "commander": "^11.1.0"
   }
 }

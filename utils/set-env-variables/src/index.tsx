@@ -1,6 +1,9 @@
-'use strict';
+"use strict";
 
-import { program } from 'commander';
+interface OptionsType {
+  force?: boolean;
+  china?: boolean;
+}
 
 function setEnvVariables(key: string, value: string) {
   process.env[key] = value;
@@ -9,12 +12,14 @@ function setEnvVariables(key: string, value: string) {
 /**
  * Set environment variables from command line arguments
  */
-export function setEnvVariablesFromCommand(command: typeof program, flag: string, variables: Record<string, string>) {
-  command.options.forEach((option) => {
-    if (option.flags.includes(flag)) {
-      Object.keys(variables).forEach((key) => {
-        setEnvVariables(key, variables[key]);
-      });
-    }
-  });
+export function setEnvVariablesFromCommand(
+  options: OptionsType,
+  flag: keyof OptionsType,
+  variables: Record<string, string>
+) {
+  if (options[flag]) {
+    Object.keys(variables).forEach((key) => {
+      setEnvVariables(key, variables[key]);
+    });
+  }
 }
