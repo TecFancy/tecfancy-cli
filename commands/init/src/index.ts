@@ -4,9 +4,9 @@ import path from "path";
 import fse from "fs-extra";
 import axios from "axios";
 import npminstall from "npminstall";
-import clearLastLine from "@tecfancy/clear-last-line";
 import log from "@tecfancy/log";
 import { spinnerStart, spinnerStop } from "@tecfancy/spinner";
+import { setEnvVariablesFromCommand } from "@tecfancy/set-env-variables";
 import {
   TECFANCY_CLI_CACHE_DIR,
   TECFANCY_CLI_NODE_MODULES_DIR,
@@ -17,6 +17,13 @@ import createWorkingDir from "./createWorkingDir.js";
 
 interface OptionsType {
   force?: boolean;
+  china?: boolean;
+}
+
+function setEnvVariables(options: OptionsType) {
+  setEnvVariablesFromCommand(options, "china", {
+    TECFANCY_CLI_REGISTRY_URL: "https://registry.npm.taobao.org",
+  });
 }
 
 function createNodeModulesDir() {
@@ -150,6 +157,7 @@ function installProject(projectName: string = "", selectedNpmName: string) {
  */
 async function init(projectName: string | undefined, options: OptionsType) {
   try {
+    setEnvVariables(options);
     await createWorkingDir(projectName, options.force);
     createNodeModulesDir();
     const projectListData = await getProjectsList();
