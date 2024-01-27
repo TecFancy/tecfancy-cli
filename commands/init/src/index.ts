@@ -13,7 +13,8 @@ import {
   TECFANCY_CLI_REGISTRY_URL,
 } from "@tecfancy/const";
 
-import createWorkingDir from "./createWorkingDir.js";
+import createWorkingDir from "./createWorkingDir";
+import generateGitIgnoreFile from "./GenerateGitIgnoreFile";
 
 interface OptionsType {
   force?: boolean;
@@ -167,6 +168,7 @@ async function init(projectName: string | undefined, options: OptionsType) {
       projectListData
     );
     await downloadProject(selectedNpmName);
+    generateGitIgnoreFile(selectedNpmName);
     installProject(projectName, selectedNpmName);
   } catch (error) {
     log.error("", `Initialization failed: ${error}`);
