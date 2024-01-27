@@ -22,7 +22,7 @@ interface OptionsType {
 
 function setEnvVariables(options: OptionsType) {
   setEnvVariablesFromCommand(options, "china", {
-    TECFANCY_CLI_REGISTRY_URL: "https://registry.npm.taobao.org",
+    TECFANCY_CLI_REGISTRY_URL: "https://registry.npmmirror.com",
   });
 }
 
