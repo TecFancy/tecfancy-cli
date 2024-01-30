@@ -39,6 +39,10 @@
     "axios": "^1.6.5",
     "fs-extra": "^11.2.0",
     "inquirer": "^9.2.12",
-    "npminstall": "^7.12.0"
+    "npminstall": "^7.12.0",
+    "semver": "^7.5.4"
+  },
+  "devDependencies": {
+    "@types/semver": "^7.5.6"
   }
 }

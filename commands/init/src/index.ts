@@ -4,6 +4,7 @@ import path from "path";
 import fse from "fs-extra";
 import axios from "axios";
 import npminstall from "npminstall";
+import semver from "semver";
 import log from "@tecfancy/log";
 import { spinnerStart, spinnerStop } from "@tecfancy/spinner";
 import { setEnvVariablesFromCommand } from "@tecfancy/set-env-variables";
@@ -121,14 +122,50 @@ async function selectProject(
   ]) as Promise<{ npmName: string }>;
 }
 
-async function downloadProject(selectedNpmName: string) {
+async function getProjectVersions(selectedNpmName: string) {
+  spinnerStart("Getting project verions...");
+
+  try {
+    const request = axios.create({
+      baseURL: process.env.TECFANCY_CLI_REGISTRY_URL || TECFANCY_CLI_REGISTRY_URL,
+      timeout: 5000,
+    });
+
+    const result = await request({ url: selectedNpmName });
+    spinnerStop();
+
+    const versions = Object.keys(result.data.versions);
+    if (versions?.length) {
+      return versions.sort((a, b) => (semver.compare(a, b)));
+    }
+    return [];
+  } catch (error) {
+    spinnerStop();
+    log.error("", `Get project verions failed: ${error}`);
+    throw new Error(`Get project verions failed: ${error}`); // Propagate the exception to be handled by the caller
+  }
+}
+
+async function selectProjectVersion(projectVersions: string[]) {
+  const inquirer = (await import("inquirer")).default;
+  return inquirer.prompt([
+    {
+      type: "list",
+      name: "version",
+      message: `Please select the project version:`,
+      choices: projectVersions,
+    },
+  ]) as Promise<{ version: string }>;
+}
+
+async function downloadProject(selectedNpmName: string, selectedVersion: string) {
   try {
     await npminstall({
       root: TECFANCY_CLI_CACHE_DIR,
       storeDir: TECFANCY_CLI_NODE_MODULES_DIR,
       registry:
         process.env.TECFANCY_CLI_REGISTRY_URL || TECFANCY_CLI_REGISTRY_URL,
-      pkgs: [{ name: selectedNpmName, version: "latest" }],
+      pkgs: [{ name: selectedNpmName, version: selectedVersion || "latest" }],
     });
     log.success("", "Download project successfully.");
   } catch (error) {
@@ -167,7 +204,9 @@ async function init(projectName: string | undefined, options: OptionsType) {
       selectedType,
       projectListData
     );
-    await downloadProject(selectedNpmName);
+    const projectVersions = await getProjectVersions(selectedNpmName);
+    const { version: selectedVersion } = await selectProjectVersion(projectVersions);
+    await downloadProject(selectedNpmName, selectedVersion);
     generateGitIgnoreFile(selectedNpmName);
     installProject(projectName, selectedNpmName);
   } catch (error) {
