@@ -140,7 +140,7 @@ async function downloadProject(selectedNpmName: string) {
 
 function installProject(projectName: string = "", selectedNpmName: string) {
   spinnerStart("Installing project...");
-  const projectPath = path.join(TECFANCY_CLI_NODE_MODULES_DIR, selectedNpmName);
+  const projectPath = path.join(TECFANCY_CLI_NODE_MODULES_DIR, selectedNpmName, 'template');
   const workingPath = path.join(process.cwd(), projectName);
   fse.ensureDirSync(projectPath);
   fse.ensureDirSync(workingPath);
