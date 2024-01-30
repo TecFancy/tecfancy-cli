@@ -7,8 +7,7 @@ import log from "@tecfancy/log";
 
 import { TECFANCY_CLI_NODE_MODULES_DIR } from "@tecfancy/const";
 
-const content = `
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+const content = `# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
 node_modules
@@ -49,7 +48,7 @@ next-env.d.ts
 
 const generateGitIgnoreFile = (selectedNpmName: string) => {
   const projectPath = path.join(TECFANCY_CLI_NODE_MODULES_DIR, selectedNpmName);
-  const gitignoreFile = path.join(projectPath, ".gitignore");
+  const gitignoreFile = path.join(projectPath, "template", ".gitignore");
   try {
     fse.ensureDirSync(projectPath);
     fse.writeFileSync(gitignoreFile, content);
