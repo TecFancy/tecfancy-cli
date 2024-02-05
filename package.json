@@ -8,14 +8,19 @@
     "utils/*"
   ],
   "scripts": {
+    "prepare": "husky",
     "build": "lerna exec --parallel -- tsc",
     "build:watch": "lerna exec --parallel -- tsc -w",
+    "prettify": "prettier --write .",
     "ncu": "ncu"
   },
   "devDependencies": {
     "@types/node": "^20.11.16",
+    "husky": "^9.0.10",
     "lerna": "^8.0.2",
+    "lint-staged": "^15.2.1",
     "npm-check-updates": "^16.14.14",
+    "prettier": "3.2.5",
     "typescript": "^5.3.3"
   },
   "engines": {
